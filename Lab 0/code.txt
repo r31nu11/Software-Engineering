@@ -16,7 +16,11 @@ mov cl, [si]
 inc si
 
 ; меняем местами S3 и S9
-xchg [si + 2], [si + 8]
+mov al, [si + 2]
+mov bl, [si + 8]
+xchg al, bl
+mov [si + 2], al
+mov [si + 8], bl
 
 ; вычисляем S2 <- S4 - (S5 - S6)
 mov al, [si + 3]
