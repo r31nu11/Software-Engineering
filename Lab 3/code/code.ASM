@@ -1,56 +1,91 @@
-    org 100h ; начало программы
-    jmp start
-    str db 80 dup(?) ; буфер для строки
-    len db 0 ; длина строки
-    msg db 'Введите строку: $' ; сообщение для пользователя
+org 100h
 
-    start:
-    mov ax, cs ; загрузить адрес сегмента кода в ax
-    mov ds, ax ; переместить адрес сегмента кода в ds
-    mov es, ax ; переместить адрес сегмента кода в es
+jmp StartN
 
-    mov ah, 9 ; функция DOS для вывода строки на экран
-    mov dx, msg ; адрес сообщения в dx
-    int 21h ; вызвать DOS
+msg1 db 'Enter string: $'
+msg2 db 'Enter symbol: $'
+msg3 db 'Changed string: $'
+input1 db 80,0,80 dup(0)
+char1 db 10,0,10 dup (0)
+len1 db 0
+str1 db 13, 10, '$', 13, 10
 
-    mov ah, 0Ah ; функция DOS для чтения строки с клавиатуры
-    mov dx, str ; адрес буфера для строки в dx
-    int 21h ; вызвать DOS
+StartN:
+mov dx, msg1
+mov ah, 09h
+int 21h
 
-    mov al, len ; загрузить длину строки в al
-    cbw ; расширить al до ax
-    mov cx, ax ; переместить длину строки в cx
-    jcxz end ; если cx равен нулю, то перейти к концу программы
+mov dx, str1
+mov ah, 09h
+int 21h
 
-    mov si, str + 2 ; загрузить адрес начала строки в si
-    cld ; установить направление сканирования вперед
+mov dx, input1
+mov ah, 0Ah
+int 21h
 
-    loop:
-    lodsb ; загрузить символ из si в al и увеличить si на 1
-    cmp al, 'a' ; сравнить al с 'a'
-    jb next ; если al меньше 'a', то перейти к следующему символу
-    cmp al, 'z' ; сравнить al с 'z'
-    ja next ; если al больше 'z', то перейти к следующему символу
-    sub al, 32 ; вычесть 32 из al (перевести символ из нижнего регистра в верхний)
-    stosb ; сохранить символ из al в es:di и увеличить di на 1
-    jmp next ; перейти к следующему символу
+mov dx, str1
+mov ah, 09h
+int 21h
 
-    next:
-    cmp al, 'A' ; сравнить al с 'A'
-    jb skip ; если al меньше 'A', то перейти к пропуску изменения регистра
-    cmp al, 'Z' ; сравнить al с 'Z'
-    ja skip ; если al больше 'Z', то перейти к пропуску изменения регистра
-    add al, 32 ; прибавить 32 к al (перевести символ из верхнего регистра в нижний)
-    stosb ; сохранить символ из al в es:di и увеличить di на 1
+mov al, [input1+1]
+mov [len1], al
 
-    skip:
-    loop loop ; повторять цикл пока cx не равен нулю
+mov dx, msg2
+mov ah, 09h
+int 21h
 
-    end:
-    mov ah, 9 ; функция DOS для вывода строки на экран
-    mov dx, str + 2; адрес измененной строки в dx
-    int 21h ; вызвать DOS
+mov dx, str1
+mov ah, 09h
+int 21
 
-    mov ah, 4Ch ; функция DOS для завершения программы
-    int 21h ; вызвать DOS
+mov ah, 0Ah
+mov dx, char1
+int 21h
 
+mov dx, str1
+mov ah, 09h
+int 21h
+
+cld
+mov di, input1 + 2
+mov al, byte[char1 + 2]
+
+cycle1:
+repne scasb
+jge change
+cmp cx, 0
+je endSc
+jmp cycle1
+
+change:
+dec di
+cmp byte[di], 'a'
+jle bigger
+sub byte[di], 'a'
+add byte[di], 'A'
+jmp cycle1
+bigger:
+sub byte[di], 'A'
+add byte[di], 'a'
+jmp cycle1
+
+endSc:
+mov ah, 09h
+mov dx, msg3
+int 21h
+
+xor di, di
+mov cl, byte[len1]
+mov di, 2
+
+mov cl, byte[input1 + 1]
+mov si, input1 + 2
+printt:
+lodsb
+int 29h
+loop printt
+
+mov ah, 08h
+int 21h
+
+ret

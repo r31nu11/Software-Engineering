@@ -1,27 +1,29 @@
+;lab 6
 org 100h
 
 everyPoint:
 mov ah, 0fh
-int 10h
-mov [bOldMode], al
-mov [bOldPage], bh
+int 10h      ; вызов видеосервис bios
+mov [bOldMode], al ; сохранить текущий видеорежим в переменную
+mov [bOldPage], bh  ; сохранить текущую видеостраницу в переменную
 
 mov ax, 0013h
-int 10h
+int 10h   ; вызвать видеорежим с функцией 00h видеорежим 13h это видеорежим с разрешением 320x200
 
-push $A000
-pop es
+push $A000   ; поместить адрес сегмента видеопамяти на стек
+
+pop es ; извлечь адрес сегмента видеопамяти из стека в регистр
 mov al, 0fh
 mov cx, 320*100
 
 xor di, di
 
 loop1:
-stosb
+stosb  ; сохранить байт из al в es:[di] и увеличить di на 1
 loop loop1
 
 mov cx, 320*100
-mov al, 29h
+mov al, 29h     ; (41) в al цвет пикселя
 
 loop2:
 stosb

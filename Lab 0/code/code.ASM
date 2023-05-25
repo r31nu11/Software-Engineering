@@ -1,3 +1,4 @@
+;lab 0
 org 100h
 
 ; выводим поясняющий текст
@@ -9,9 +10,27 @@ mov dx, str1
 mov ah, 09h
 int 21h
 
+
 ; запрашиваем ввод строки
 mov dx, buf
 mov ah, 0Ah
+int 21h
+
+mov dx, str1
+mov ah, 09h
+int 21h
+
+
+;mov dx, buf
+;mov ah, 09h
+;int 21h
+
+mov dx, msg2
+mov ah, 09h
+int 21h
+
+mov dx, str1
+mov ah, 09h
 int 21h
 
 ; получаем длину строки
@@ -45,6 +64,7 @@ int 16h
 mov ax, 4C00h
 int 21h
 
+msg2 db 'Result: $'
 msg db 'Enter text: $'
 str1 db 13, 10, '$', 13, 10
 buf db 80, ?, 80 dup ('$')

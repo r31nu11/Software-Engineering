@@ -1,10 +1,29 @@
-; создаем COM программу дл€ DOS
+;lab 1
+
 org 100h
+
+Instr:
+    mov dx, msgI
+    mov ah, 09h
+    int 21h
+
+    mov dx, str1
+    mov ah, 09h
+    int 21h
 
 ; читаем строку с клавиатуры
 mov ah, 0Ah
 mov dx, buffer
 int 21h
+
+;DubStr:
+;        mov dx, buffer
+;        mov ah, 09h
+;        int 21h
+
+        mov dx, str1
+        mov ah, 09h
+        int 21h
 
 ; провер€ем длину строки
 mov al, byte[buffer+1] ; al = длина строки
@@ -58,17 +77,13 @@ jb error ; то ошибка
 cmp si, '9' ; если больше '9'
 ja error ; то ошибка
 
-; выводим сообщение об успехе
 mov ah, 09h
 mov dx, success_msg
 int 21h
+; выводим сообщение об успехе
 
-mov ah, 08h
-int 21h
-
+jmp endprog
 ; завершаем программу
-mov ah, 4Ch
-int 21h
 
 error:
 ; выводим сообщение об ошибке
@@ -76,17 +91,18 @@ mov ah, 09h
 mov dx, error_msg
 int 21h
 
+; завершаем программу с кодом ошибки 1
+endprog:
+
 mov ah, 08h
 int 21h
 
-; завершаем программу с кодом ошибки 1
-mov ah, 4Ch
-mov al, 1
-int 21h
-
+ret
 
 ; объ€вл€ем буфер дл€ ввода строки (максимум 10 символов)
-buffer db 10, ?, 10 dup(0)
+buffer db 10, 0, 10 dup(0)
 ; объ€вл€ем сообщени€ дл€ вывода на экран
+msgI db "Enter text: $"
+str1 db 13, 10, '$', 13, 10
 success_msg db "Correct.$"
-error_msg db "Incorrect$"
+error_msg db "Incorrect.$"
