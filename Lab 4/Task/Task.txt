@@ -15,3 +15,21 @@
 Варинт 8: 
 	Ввести два 8-битовых целых числа A и B.
 Вычислить результат логического побитового сложения чисел A^2, B^3.
+
+Work topic: PROCEDURES
+	For the calculated variant of the individual assignment write in Assembler language and debug three programs containing a procedure.
+The programs differ in the way parameters are passed to the procedure and the type of procedure:
+
+	Program 1: Parameter transfer via register.
+The type of procedure is far.
+	Program 2: Passing parameters through global variables.
+The type of procedure is long-range.
+	Program 3: Parameter transfer via stack.
+Procedure type - near.
+
+	In the program to provide data input in accordance with the variant of individual assignment, transfer of this data to the procedure of a given type using the appropriate method of parameter transfer and the necessary calculations in the body of the procedure in accordance with the variant.
+The program must contain comments for each command.
+
+Variant 8:
+	Enter two 8-bit integers A and B.
+Calculate the result of logical bitwise addition of the numbers A^2, B^3.
