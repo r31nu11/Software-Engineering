@@ -1,1 +1,3 @@
 Создать ассемблерные вставки, вывод в Delphi.
+
+Create assembler inserts, output in Delphi.
