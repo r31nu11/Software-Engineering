@@ -1,3 +1,7 @@
 Изменить регистр введенного символа на противоположный по всей строке.
 (Использовать команду scas).
 Строку описать в сегменте данных.
+
+Change the case of the entered character to the opposite case across the entire line.
+(Use the scas command).
+Describe the string in a data segment.
