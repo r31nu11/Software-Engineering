@@ -1,1 +1,3 @@
 Создать программу которая выводит графически флаг любой страны.
+
+Create a program that graphically displays the flag of any country.
